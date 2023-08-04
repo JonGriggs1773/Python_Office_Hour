@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update User</title>
+</head>
+<body>
+    <h1>Update {{ user.first_name }}</h1>
+    <div>
+        <form action="/update/user" method = "post">
+            <input type="hidden" name="id" value="{{ user.id }}">
+            <div>
+                <label>
+                    First Name:
+                    <input type="text" name="first_name" value="{{ user.first_name }}">
+                </label>
+            </div>
+            <div>
+                <label>
+                    Last Name:
+                    <input type="text" name="last_name" value="{{ user.last_name }}">
+                </label>
+            </div>
+            <div>
+                <label>
+                    Email:
+                    <input type="email" name="email" value="{{ user.email }}">
+                </label>
+            </div>
+            <div>
+                <label>
+                    About:
+                    <textarea type="text" name="about">{{ user.about }}</textarea>
+                </label>
+            </div>
+            <input type="submit" value="Update User">
+        </form>
+    </div>
+</body>
+</html>

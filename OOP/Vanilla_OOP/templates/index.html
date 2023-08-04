@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User</title>
+</head>
+<body>
+    <h1>Create User Below</h1>
+    <form action="/create/user" method="post">
+        <div>
+            <label>
+                First Name:
+                <input type="text" name="first_name">
+            </label>
+        </div>
+        <div>
+            <label>
+                Last Name:
+                <input type="text" name="last_name">
+            </label>
+        </div>
+        <div>
+            <label>
+                Email:
+                <input type="email" name="email">
+            </label>
+        </div>
+        <div>
+            <label>
+                About:
+                <textarea type="text" name="about" placeholder="About..."></textarea>
+            </label>
+        </div>
+        <input type="submit" value="Create User">
+    </form>
+    <a href="/show/users">View All Users</a>
+</body>
+</html>
