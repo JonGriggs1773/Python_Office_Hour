@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Users</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello, create a user below</h1>
+        <div class="row align-items-center">
+            <form class="" action="/create/user" class="'" method = "post">
+                <div>
+                    <label class="form-label">
+                        First Name:
+                        <input class="form-control" type="text" name="first_name" placeholder="First Name...">
+                    </label>
+                </div>
+                <div>
+                    <label class=""form-label>
+                        Last Name:
+                        <input type="text" class="form-control" name="last_name" placeholder="Last Name...">
+                    </label>
+                </div>
+                <div>
+                    <label class=""form-label>
+                        Email:
+                        <input type="email" class="form-control" name="email" placeholder="Email...">
+                    </label>
+                </div>
+                <div>
+                    <label class=""form-label>
+                        About:
+                        <textarea type="text" class="form-control" name="about" placeholder="About..."></textarea>
+                    </label>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Create User">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
