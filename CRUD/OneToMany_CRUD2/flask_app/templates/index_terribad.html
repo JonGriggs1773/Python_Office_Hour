@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Users</title>
+</head>
+<body>
+    <div class="container-fluid bg-info">
+        <div class="row justify-content-center">
+            <h1 class="text-center bg-primary">Hello, create a user below</h1>
+            <div class="bg-danger text-center col-6">
+                <form class="row justify-content-center" action="/create/user" class="'" method = "post">
+                    <div class="row col-12 bg-dark justify-content-evenly m-1">
+                        <label class="form-label row col-8 bg-secondary justify-content-between align-items-center">
+                            First Name:
+                            <div class="col-9">
+                                <input class="form-control col-12 bg-success" type="text" name="first_name" placeholder="First Name...">
+                            </div>
+                        </label>
+                    </div>
+                    <div class="row col-12 bg-dark justify-content-evenly m-1">
+                        <label class="form-label row col-8 bg-secondary justify-content-between align-items-center">
+                            Last Name:
+                            <div class="col-9">
+                                <input class="form-control col-12 bg-success" type="text" name="last_name" placeholder="Last Name...">
+                            </div>
+                        </label>
+                    </div>
+                    <div class="row col-12 bg-dark justify-content-evenly m-1">
+                        <label class="form-label row col-8 bg-secondary justify-content-between align-items-center">
+                            Email:
+                            <div class="col-9">
+                                <input class="form-control col-12 bg-success" type="text" name="email" placeholder="Email...">
+                            </div>
+                        </label>
+                    </div>
+                    <div class="row col-12 bg-dark justify-content-evenly m-1">
+                        <label class="form-label row col-8 bg-secondary justify-content-between align-items-center">
+                            About:
+                            <div class="col-9">
+                                <textarea class="form-control col-12 bg-success" type="text" name="about" placeholder="About..."></textarea>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="col-4 m-1">
+                        <input type="submit" class="btn btn-primary" value="Create User">
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

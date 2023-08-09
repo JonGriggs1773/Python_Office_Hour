@@ -64,6 +64,7 @@ class User:
             return one_user
         else:
             print("User was not gettable")
+            return False
 
     #! Delete
     @classmethod

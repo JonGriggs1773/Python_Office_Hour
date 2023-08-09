@@ -1,10 +1,10 @@
-from config.mysqlconnection import connectToMySQL
+from flask_app.config.mysqlconnection import connectToMySQL
 import pprint
 from flask_app.models import pet
 
 
 class User:
-    db = "users_and_pets_office_hour"
+    db = "users_and_pets"
     def __init__(self, data):
         self.id = data['id']
         self.first_name = data['first_name']
@@ -66,6 +66,7 @@ class User:
             return one_user
         else:
             print("User was not gettable")
+            return False
 
     #! Delete
     @classmethod
@@ -82,7 +83,7 @@ class User:
     #! Read_One_With_Child
     @classmethod
     def get_one_user_with_pets(cls, data):
-        query = "SELECT * FROM users LEFT JOIN pets ON user_id=user.id WHERE user.id = %(id)s;"
+        query = "SELECT * FROM users LEFT JOIN pets ON user_id=users.id WHERE users.id = %(id)s;"
         results = connectToMySQL(cls.db).query_db( query , data )
         user = cls(results[0])
         for row_from_db in results:
@@ -90,6 +91,8 @@ class User:
                 "id": row_from_db["pets.id"],
                 "name": row_from_db["name"],
                 "species": row_from_db["species"],
+                "how_many_legs": row_from_db["how_many_legs"],
+                "friendly": row_from_db["friendly"],
                 "created_at": row_from_db["pets.created_at"],
                 "updated_at": row_from_db["pets.updated_at"],
                 "user_id":row_from_db["user_id"]
@@ -97,3 +100,47 @@ class User:
             user.pets.append(pet.Pet(pet_data))
         print(user.pets)
         return user
+    
+    @classmethod
+    def get_all_users_with_pets(cls):
+        query = "SELECT * FROM users LEFT JOIN pets ON user_id=users.id;"
+        results = connectToMySQL(cls.db).query_db( query )
+
+        all_users_with_pets = [ ]
+
+        for row in results:
+            new_user = True
+
+            one_pet_info = {
+                "id": row["pets.id"],
+                "name": row["name"],
+                "species": row["species"],
+                "how_many_legs": row["how_many_legs"],
+                "friendly": row["friendly"],
+                "created_at": row["pets.created_at"],
+                "updated_at": row["pets.updated_at"],
+                "user_id":row["user_id"]
+            }
+
+            if (len(all_users_with_pets) == 0) or (row['id'] != all_users_with_pets[len(all_users_with_pets)-1].id):
+                one_user_instance = cls(row)
+                print("one user instance", one_user_instance)
+
+                if one_pet_info['id'] != None:
+
+                    one_pet_instance = pet.Pet(one_pet_info)
+                    print("one pet instance", one_pet_instance)
+
+                    one_user_instance.pets.append(one_pet_instance)
+
+                all_users_with_pets.append(one_user_instance)
+
+            else:
+                if one_pet_info['id'] != None:
+
+                    one_pet_instance = pet.Pet(one_pet_info)
+                    print("one pet instance", one_pet_instance)
+                
+                    all_users_with_pets[len(all_users_with_pets)-1].pets.append(one_pet_instance)
+
+        return all_users_with_pets

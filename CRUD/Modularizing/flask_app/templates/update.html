@@ -3,39 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <title>Update User</title>
 </head>
-<body>
-    <h1>Update {{ user.first_name }}</h1>
-    <div>
-        <form action="/update/user" method = "post">
-            <input type="hidden" name="id" value="{{ user.id }}">
-            <div>
-                <label>
-                    First Name:
-                    <input type="text" name="first_name" value="{{ user.first_name }}">
-                </label>
-            </div>
-            <div>
-                <label>
-                    Last Name:
-                    <input type="text" name="last_name" value="{{ user.last_name }}">
-                </label>
-            </div>
-            <div>
-                <label>
-                    Email:
-                    <input type="email" name="email" value="{{ user.email }}">
-                </label>
-            </div>
-            <div>
-                <label>
-                    About:
-                    <textarea type="text" name="about">{{ user.about }}</textarea>
-                </label>
-            </div>
-            <input type="submit" value="Update User">
-        </form>
+<body class="container-fluid bg-secondary">
+
+    <div class="row justify-content-center">
+
+        <h1 class="text-center mt-5">Update {{ user.first_name }}</h1>
+
+        <div class="text-center col-6 m-4">
+            <form class="row justify-content-center" action="/update/user" method = "post">
+                
+                <input type="hidden" name="id" value="{{ user.id }}">
+
+                <div class="row col-12 justify-content-evenly m-1">
+                    <label class="form-label row col-8 justify-content-between align-items-center">
+                        First Name:
+                        <div class="col-9">
+                            <input class="form-control col-12" type="text" name="first_name" value={{user.first_name}} placeholder="First Name...">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="row col-12 justify-content-evenly m-1">
+                    <label class="form-label row col-8 justify-content-between align-items-center">
+                        Last Name:
+                        <div class="col-9">
+                            <input class="form-control col-12" type="text" name="last_name" value={{user.last_name}} placeholder="Last Name...">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="row col-12 justify-content-evenly m-1">
+                    <label class="form-label row col-8 justify-content-between align-items-center">
+                        Email:
+                        <div class="col-9">
+                            <input class="form-control col-12" type="text" name="email" value={{user.email}} placeholder="Last Name...">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="row col-12 justify-content-evenly m-1">
+                    <label class="form-label row col-8 justify-content-between align-items-center">
+                        About:
+                        <div class="col-9">
+                            <textarea class="form-control col-12" type="text" name="about" placeholder="About...">{{user.about}}</textarea>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="col-4 mt-3">
+                    <input type="submit" class="btn btn-dark" value="Update User">
+                </div>
+
+            </form>
+
+        </div>
     </div>
 </body>
 </html>
