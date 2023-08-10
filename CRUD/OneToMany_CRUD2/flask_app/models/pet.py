@@ -82,8 +82,8 @@ class Pet:
     
     #! Read_One_With_Child
     @classmethod
-    def get_one_user_with_pets(cls, data):
-        query = "SELECT * FROM users LEFT JOIN pets ON user_id=user.id WHERE user.id = %(id)s;"
+    def get_one_pet_with_user(cls, data):
+        query = "SELECT * FROM pets LEFT JOIN users ON user_id=users.id WHERE pets.id = %(id)s;"
         results = connectToMySQL(cls.db).query_db( query , data )
         user = cls(results[0])
         

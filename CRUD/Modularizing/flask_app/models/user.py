@@ -1,9 +1,10 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 import pprint
+from flask_app.models import pet
 
 
 class User:
-    db = "users_and_pets_office_hour"
+    db = "users_and_pets"
     def __init__(self, data):
         self.id = data['id']
         self.first_name = data['first_name']
@@ -12,6 +13,7 @@ class User:
         self.about = data['about']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.pets = [ ]
 
     #! Create
     @classmethod
@@ -77,3 +79,28 @@ class User:
         results = connectToMySQL(cls.db).query_db(query, data)
         print("Results: ", results)
         return results
+    
+    @classmethod
+    def get_one_user_with_pets(cls, data):
+        query = "SELECT * FROM users LEFT JOIN pets ON user_id = users.id WHERE users.id = %(id)s"
+        results = connectToMySQL(cls.db).query_db(query, data)
+        pprint.pp(results)
+
+        user = cls(results[0])
+
+        for row_from_db in results:
+            pet_data = {
+                "id": row_from_db["pets.id"],
+                "name": row_from_db["name"],
+                "species": row_from_db["species"],
+                "how_many_legs": row_from_db["how_many_legs"],
+                "friendly": row_from_db["friendly"],
+                "created_at": row_from_db["pets.created_at"],
+                "updated_at": row_from_db["pets.updated_at"],
+                "user_id":row_from_db["user_id"]
+            }
+            pet_object = pet.Pet(pet_data)
+            user.pets.append(pet_object)
+
+        return user
+

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Add a Pet</title>
+</head>
+<body class="container-fluid bg-secondary">
+
+    <div class="row justify-content-center">
+
+        <h1 class="text-center mt-5">Add your pet...</h1>
+
+        <div class="text-center col-6 m-4">
+            <form class="row justify-content-center" action="/create/pet/submission" class="'" method = "post">
+                
+                <div class="row col-12 justify-content-evenly m-1">
+                    <label class="form-label row col-8 justify-content-between align-items-center">
+                        Name:
+                        <div class="col-9">
+                            <input class="form-control col-12" type="text" name="name" placeholder="Name...">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="row col-12 justify-content-evenly m-1">
+                    <label class="form-label row col-8 justify-content-between align-items-center">
+                        Species:
+                        <div class="col-9">
+                            <input class="form-control col-12" type="text" name="species" placeholder="Species...">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="row col-12 justify-content-evenly m-1">
+                    <label class="form-label row col-8 justify-content-between align-items-center">
+                        Leg Count:
+                        <div class="col-9">
+                            <input class="form-control col-12" type="number" name="how_many_legs" placeholder="Leg Count...">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="row col-12 justify-content-evenly m-1">
+                    <label class="form-label row col-8 justify-content-between align-items-center">
+                        Caretaker:
+                        <div class="col-9">
+                            <select class="form-control col-12" type="text" name="user_id" placeholder="Caretaker...">
+                                {% for user in users %}
+                                <option value={{user.id}}>{{user.first_name}} {{user.last_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="row col-12 justify-content-center mt-2">
+                    <label class="form-label row col-2  justify-content-start align-items-center">
+                        Friendly?
+                    </label>
+                    <div class="col-6  row justify-content-around">
+                        <div class=" col-6 row align-items-center  text-center">
+                            <label class="form-check-label col-11">
+                            <!-- <label class="form-label row col-8 justify-content-between align-items-center"> -->
+                                Yes! Friendly!
+                            </label>
+                            <div class="col-1 g-0">
+                                <input class="form-check-input" type="radio" name="friendly" value=1>
+                            </div>
+                        </div>
+                        <div class=" col-6 row  justify-content-start align-items-center text-center">
+                            <label class="form-check-label col-11">
+                                No! Bitey-Scratchy!
+                            </label>
+                            <div class="col-1 g-0">
+                                <input class="form-check-input" type="radio" name="friendly" value=0>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-4 mt-4">
+                    <input type="submit" class="btn btn-dark" value="Add Pet">
+                </div>
+
+            </form>
+            
+        </div>
+    </div>
+</body>
+</html>

@@ -109,7 +109,7 @@ class User:
         all_users_with_pets = [ ]
 
         for row in results:
-            new_user = True
+            # new_user = True
 
             one_pet_info = {
                 "id": row["pets.id"],

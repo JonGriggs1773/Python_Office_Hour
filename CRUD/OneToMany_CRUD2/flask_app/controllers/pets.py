@@ -12,7 +12,7 @@ def create_pet_form():
 @app.route("/create/pet/submission", methods = ['POST'])
 def create_new_pet():
     Pet.create_pet(request.form)
-    return redirect("/view/all")
+    return redirect("/view/all_users")
 
 # @app.route("/view/all")
 # def show_all_users():
