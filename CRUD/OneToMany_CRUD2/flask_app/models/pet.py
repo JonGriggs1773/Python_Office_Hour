@@ -46,7 +46,7 @@ class Pet:
     def update_pet_by_id(cls, data):
         query = """
                 UPDATE pets
-                SET name = %(name)s, species = %(species)s
+                SET name = %(name)s, species = %(species)s, how_many_legs = %(how_many_legs)s, friendly = %(friendly)s, user_id = %(user_id)s
                 WHERE id = %(id)s;
                 """
         results = connectToMySQL(cls.db).query_db(query, data)
@@ -55,18 +55,29 @@ class Pet:
 
     @classmethod
     def get_one_pet_by_id(cls, data):
-        query = """
-                SELECT *
-                FROM pets
-                WHERE id = %(id)s
-                """
-        results = connectToMySQL(cls.db).query_db(query, data)
-        print("Results: ", results)
+        query = "SELECT * FROM pets LEFT JOIN users ON user_id=users.id WHERE pets.id = %(id)s;"
+        results = connectToMySQL(cls.db).query_db( query , data )
+
         if results:
-            one_pet = cls(results[0])
-            return one_pet
+
+            pet = cls(results[0])
+            
+            for row_from_db in results:
+                user_data = {
+                    'id': row_from_db['users.id'],
+                    'first_name': row_from_db['first_name'],
+                    'last_name': row_from_db['last_name'],
+                    'email': row_from_db['email'],
+                    'about': row_from_db['about'],
+                    'created_at': row_from_db['users.created_at'],
+                    'updated_at': row_from_db['users.updated_at']
+                }
+                pet.owner = user.User(user_data)
+            print(pet)
+            return pet
         else:
             print("Pet was not gettable")
+            return False
 
     #! Delete
     @classmethod
@@ -85,18 +96,19 @@ class Pet:
     def get_one_pet_with_user(cls, data):
         query = "SELECT * FROM pets LEFT JOIN users ON user_id=users.id WHERE pets.id = %(id)s;"
         results = connectToMySQL(cls.db).query_db( query , data )
-        user = cls(results[0])
+
+        pet = cls(results[0])
         
         for row_from_db in results:
-            pet_data = {
-                "id": row_from_db["pets.id"],
-                "name": row_from_db["name"],
-                "species": row_from_db["species"],
-                "friendly": row_from_db["friendly"],
-                "created_at": row_from_db["pets.created_at"],
-                "updated_at": row_from_db["pets.updated_at"],
-                "user_id":row_from_db["user_id"]
+            user_data = {
+                'id': row_from_db['users.id'],
+                'first_name': row_from_db['first_name'],
+                'last_name': row_from_db['last_name'],
+                'email': row_from_db['email'],
+                'about': row_from_db['about'],
+                'created_at': row_from_db['users.created_at'],
+                'updated_at': row_from_db['users.updated_at']
             }
-            user.pets.append(pet.Pet(pet_data))
-        print(user.pets)
-        return user
+            pet.owner = user.User(user_data)
+        print(pet)
+        return pet

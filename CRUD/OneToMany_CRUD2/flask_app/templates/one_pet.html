@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>View Pet</title>
+</head>
+<body class="container-fluid bg-secondary">
+
+    <div class="row justify-content-center text-center">
+
+        <h1 class="text-center mt-5">{{pet.name}}'s Page</h1>
+        <a class="text-info fs-4 my-2" href="/view/all_users">All Users</a>
+
+        <div class="col-12 row justify-content-center my-3">
+            <div class="row justify-content-center">
+                <h4 class="col-7 my-2">{{pet.name }} is a pet of type {{pet.species}}! {{pet.name }} has {{pet.how_many_legs}} legs.</h4>
+                <h4 class="col-7 my-2">{{pet.name }} is {% if pet.friendly == 1%}friendly! You can pet them!{% else %}NOT friendly! I do NOT recommend petting them!{% endif %}</h4>
+                <h4 class="col-7 my-2"><a class="text-info" href="/view/user/{{pet.owner.id}}">{{pet.owner.first_name}} {{pet.owner.last_name}}</a> is {{pet.name}}'s caretaker.</h4>
+            </div>
+            <div class="row col-12 justify-content-evenly mt-4">
+                <h5 class="row justify-content-evenly col-3"><a class="btn btn-warning col-2" href="/update/pet/{{ pet.id }}">Edit</a> <a class="col-2 btn btn-danger " href="/delete/pet/{{ pet.id }}" >Delete</a></h5>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

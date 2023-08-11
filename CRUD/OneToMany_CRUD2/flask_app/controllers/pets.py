@@ -20,48 +20,43 @@ def create_new_pet():
 #     print(all_users)
 #     return render_template("all_users.html", all_users = all_users)
 
-# @app.route("/view/<int:user_id>")
-# def show_one_user(user_id):
-#     data = {
-#         'id': user_id
-#     }
-#     user = User.get_one_user_by_id(data)
-#     print(user)
-#     if user:
-#         return render_template("one_user.html", user = user)
-#     else:
-#         return redirect("/view/all")
+@app.route("/view/pet/<int:pet_id>")
+def show_one_pet_with_owner(pet_id):
+    data = {
+        'id': pet_id
+    }
+    pet = Pet.get_one_pet_with_user(data)
+    print(pet)
+    if pet:
+        return render_template("one_pet.html", pet = pet)
+    else:
+        return redirect("/view/all_users")
 
-# @app.route("/update/<int:id>")
-# def update_form(id):
-#     data = {"id": id}
-#     one_user = User.get_one_user_by_id(data)
-#     print(one_user)
-#     return render_template("update.html", user = one_user)
+@app.route("/update/pet/<int:id>")
+def update_pet_form(id):
+    data = {"id": id}
+    one_pet = Pet.get_one_pet_by_id(data)
+    users = User.get_all_users()
+    print(one_pet.__dict__)
+    return render_template("update_pet.html", users = users, pet = one_pet)
 
-# @app.route("/update/user", methods = ['POST'])
-# def update_user():
-#     data = {
-#         "id": request.form['id'],
-#         "first_name": request.form['first_name'],
-#         "last_name": request.form['last_name'],
-#         "email": request.form['email'],
-#         "about": request.form['about']
-#     }
-#     if User.update_user_by_id(data) == None:
-#         return redirect("/view/all")
-#     else:
-#         return redirect(f"/update/{request.form['id']}")
+@app.route("/update/pet/submission", methods = ['POST'])
+def update_pet():
+    data = {
+        "id": request.form['id'],
+        "name": request.form['name'],
+        "species": request.form['species'],
+        "how_many_legs": request.form['how_many_legs'],
+        "friendly": request.form['friendly'],
+        "user_id": request.form['user_id']
+    }
+    if Pet.update_pet_by_id(data) == None:
+        return redirect("/view/all_users")
+    else:
+        return redirect(f"/update/pet/{request.form['id']}")
     
-# @app.route("/delete/<int:id>")
-# def delete_user(id):
-#     data = {"id": id}
-#     User.delete_user_by_id(data)
-#     return redirect("/view/all")
-
-# @app.route('/show_one_user_with_pets/<int:id>')
-# def show_one_user_with_pets(id):
-#     data = {"id": id}
-#     one_user_with_pets = User.get_one_user_by_id(data)
-#     print(one_user_with_pets)
-#     return render_template("one_user.html", user = one_user_with_pets)
+@app.route("/delete/pet/<int:id>")
+def delete_pet(id):
+    data = {"id": id}
+    Pet.delete_pet_by_id(data)
+    return redirect("/view/all_users")

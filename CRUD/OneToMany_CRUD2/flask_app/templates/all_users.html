@@ -37,9 +37,9 @@
                         <td>
                             {% for i in range(user.pets|length) %}
                                 {% if i == user.pets|length -1 %}
-                                    {{user.pets[i].name}}
+                                    <a class="text-success" href="/view/pet/{{user.pets[i].id}}">{{user.pets[i].name}}</a>
                                 {% else %}
-                                    {{user.pets[i].name}},
+                                    <a class="text-success" href="/view/pet/{{user.pets[i].id}}">{{user.pets[i].name}}</a>,
                                 {% endif %}
                             {% endfor %}
                         </td>

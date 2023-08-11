@@ -30,7 +30,7 @@
             <h3>{{user.first_name}}'s Pets!</h3>
                 {% if user.pets[0].id %}
                     {% for pet in user.pets %}
-                        <div class="my-4 bg-info rounded p-2">
+                        <div class="my-4 bg-success rounded p-2">
                             <h4>{{pet.name}}</h4>
                             <h5>{{pet.name}} is a(n) {{pet.species}} with {{pet.how_many_legs}} legs!</h5>
                             {% if pet.friendly %}
