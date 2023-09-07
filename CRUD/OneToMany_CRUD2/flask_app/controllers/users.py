@@ -1,30 +1,40 @@
 from flask_app import app
-from flask import request, render_template, redirect
+from flask import request, render_template, redirect, session
 from flask_app.models.user import User
 
 
 @app.route("/")
 def home():
-    return redirect("/view/all_users")
+    return render_template("index.html")
+
+@app.route("/create/user/submission", methods = ['POST'])
+def create_new_user():
+    if User.create_user(request.form):
+        return redirect("/view/all_users")
+    else:
+        return redirect("/")
+    
+@app.route("/login/user", methods = ['POST'])
+def login():
+    if User.login_user(request.form):
+        return redirect('/view/all_users')
+    else:
+        return redirect('/')
 
 @app.route("/uglyform")
 def uglyform():
     return render_template("index_terribad.html")
 
-@app.route("/create/user")
-def create_user_form():
-    return render_template("index.html")
-
-@app.route("/create/user/submission", methods = ['POST'])
-def create_new_user():
-    User.create_user(request.form)
-    return redirect("/view/all_users")
 
 @app.route("/view/all_users")
 def show_all_users_with_pets():
-    all_users_with_pets = User.get_all_users_with_pets()
-    print(all_users_with_pets)
-    return render_template("all_users.html", all_users = all_users_with_pets)
+    if 'user_id' in session:
+        logged_in_user = User.get_one_user_by_id(session['user_id'])
+        all_users_with_pets = User.get_all_users_with_pets()
+        print(all_users_with_pets)
+        return render_template("all_users.html", all_users = all_users_with_pets, logged_in_user=logged_in_user)
+    else:
+        return redirect("/")
 
 @app.route("/view/user/<int:user_id>")
 def show_one_user_with_pets(user_id):
@@ -63,3 +73,8 @@ def delete_user(id):
     data = {"id": id}
     User.delete_user_by_id(data)
     return redirect("/view/all_users")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect('/')

@@ -1,6 +1,11 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-import pprint
+from flask import flash, session
 from flask_app.models import pet
+from flask_bcrypt import Bcrypt
+from flask_app import app
+bcrypt = Bcrypt(app)
+import pprint
+import re
 
 
 class User:
@@ -10,21 +15,29 @@ class User:
         self.first_name = data['first_name']
         self.last_name = data['last_name']
         self.email = data['email']
+        self.password = data['password']
         self.about = data['about']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.pets = []
 
     #! Create
+
+    #todo This is a boring create method, so let's add some things to it.
     @classmethod
     def create_user(cls, data):
+        if not cls.user_validations(data):
+            return False
+        parsed_data = cls.parse_user_data(data)
         query = """
-                INSERT INTO users (first_name, last_name, email, about)
-                VALUES (%(first_name)s, %(last_name)s, %(email)s, %(about)s)
+                INSERT INTO users (first_name, last_name, email, about, password)
+                VALUES (%(first_name)s, %(last_name)s, %(email)s, %(about)s, %(password)s)
                 """
-        result = connectToMySQL(cls.db).query_db(query, data)
-        print(result)
-        return result
+        user_id = connectToMySQL(cls.db).query_db(query, parsed_data)
+        print(user_id)
+        session['user_id'] = user_id
+        session['full_name'] = f"{parsed_data['first_name']} {parsed_data['last_name']}"
+        return True
     
     #! Read_All
     @classmethod
@@ -67,6 +80,24 @@ class User:
         else:
             print("User was not gettable")
             return False
+        
+    @classmethod
+    def get_one_user_by_email(cls, email):
+        data = {"email": email}
+        query = """
+                SELECT *
+                FROM users
+                WHERE email = %(email)s
+                """
+        results = connectToMySQL(cls.db).query_db(query, data)
+        print("Results: ", results)
+        if results:
+            one_user = cls(results[0])
+            return one_user
+        else:
+            print("User was not gettable")
+            return False
+
 
     #! Delete
     @classmethod
@@ -144,3 +175,57 @@ class User:
                     all_users_with_pets[len(all_users_with_pets)-1].pets.append(one_pet_instance)
 
         return all_users_with_pets
+    
+    #todo Add Validations
+    
+
+    @staticmethod
+    def user_validations(form_data):
+        EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+        is_valid = True
+        if len(form_data['first_name']) < 2:
+            flash("First name must be at least 2 characters")
+            is_valid = False
+        if len(form_data['last_name']) < 2:
+            flash("Last name must be at least 2 characters")
+            is_valid = False
+        if not EMAIL_REGEX.match(form_data['email']):
+            flash('Email must be in proper format')
+            is_valid = False
+        if User.get_one_user_by_email(form_data['email']):
+            flash('Email is already in our system, please try again')
+            is_valid = False
+        if form_data['password'] != form_data['confirm_password']:
+            flash('Password and Confirm Password do not match')
+            is_valid = False
+        if len(form_data['password']) <= 8:
+            flash('Password must be at least 8 characters')
+            is_valid = False
+        return is_valid
+    
+    @staticmethod
+    def parse_user_data(form_data):
+        parsed_data = {}
+        parsed_data['first_name'] = form_data['first_name']
+        parsed_data['last_name'] = form_data['last_name']
+        parsed_data['email'] = form_data['email']
+        parsed_data['about'] = form_data['about']
+        parsed_data['password'] = bcrypt.generate_password_hash(form_data['password'])
+        return parsed_data
+    
+    @staticmethod
+    def login_user(data):
+        this_user = User.get_one_user_by_email(data['email'])
+        if this_user:
+            print('Got this boi/goi')
+            if bcrypt.check_password_hash(this_user.password, data['password']):
+                session['user_id'] = this_user.id
+                session['full_name'] = f"{this_user.first_name} {this_user.last_name}"
+                return True
+            else:
+                flash('Your login failed')
+                return False
+        else:
+            flash('Your login failed')
+            return False
+
